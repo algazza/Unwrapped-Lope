@@ -166,7 +166,7 @@ const submitForm = async (event: Event) => {
 
   try {
     await axios.post(
-        import.meta.env.VITE_GFORM_LINK,
+        "https://unwrapped-love.vercel.app/api/sendForm",
         formData,
     )
     isOpen.value = true;
