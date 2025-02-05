@@ -17,7 +17,7 @@ import {Input} from './components/ui/input'
 import {Label} from "./components/ui/label";
 import {Button} from './components/ui/button'
 import {Textarea} from '@/components/ui/textarea'
-import { Toaster } from '@/components/ui/toast'
+import {Toaster} from '@/components/ui/toast'
 import {useToast} from '@/components/ui/toast/use-toast'
 import {computed, ref} from "vue";
 import axios from "axios";
@@ -28,7 +28,9 @@ import PaketHTS from "@/assets/bunga rajut surat.png";
 import PaketBackburner from "@/assets/bunga surat.png";
 import PaketCLBK from "@/assets/bunga coklat surat.png";
 
-const { toast } = useToast()
+const {toast} = useToast()
+const username = ref<string>("");
+const gradeUser = ref<string>("");
 const isOpen = ref<boolean>(false)
 const messageSwitch = ref<boolean>(false)
 const noteSwitch = ref<boolean>(false)
@@ -115,24 +117,32 @@ const products = ref<ProductCardProps[]>([
   },
 ]);
 
+const updateUsername = (value: string) => {
+  username.value = value;
+}
+
+const updateGradeUser = (value: string) => {
+  gradeUser.value = value;
+}
+
 const hasProductSelected = computed(() => {
   return Boolean(products.value.some(product => product.totalProduct > 0));
 })
 
-const submitForm = async (event) => {
+const submitForm = async (event: Event) => {
   event.preventDefault()
 
   const formData = new FormData()
 
   products.value.forEach(product => {
     if (product.totalProduct > 0) {
-      formData.append(product.entry, product.totalProduct)
+      formData.append(product.entry, product.totalProduct.toString())
       formData.append(product.colorEntry, product.colorProduct)
     }
   })
 
   inputName.value.forEach((input) => {
-    const inputElement = document.querySelector(`[name="${input.entry}"]`)
+    const inputElement = document.querySelector(`[name="${input.entry}"]`) as HTMLInputElement
     if (inputElement) {
       formData.append(input.entry, inputElement.value)
     }
@@ -143,13 +153,13 @@ const submitForm = async (event) => {
   }
 
   if (noteSwitch.value) {
-    const receiverNote = document.querySelector(`[name="entry.984193296"]`)
+    const receiverNote = document.querySelector(`[name="entry.984193296"]`) as HTMLInputElement
     if (receiverNote) {
       formData.append("entry.984193296", receiverNote.value)
     }
   }
 
-  const note = document.querySelector(`[name="entry.1524280066"]`)
+  const note = document.querySelector(`[name="entry.1524280066"]`) as HTMLTextAreaElement
   if (note) {
     formData.append("entry.1524280066", note.value)
   }
@@ -160,6 +170,10 @@ const submitForm = async (event) => {
         formData,
     )
     isOpen.value = true;
+    setTimeout(() => window.open(
+        `https://wa.me/+62895635004580?text=Halo%20kak%2C%20saya%20${username.value}%20dari%20${gradeUser.value}.%20Sudah%20pesan%20Pre-Order%20Valentine.%20Mohon%20dicek%2C%20terima%20kasih`,
+        "_blank",
+    ), 1000);
   } catch (error) {
     toast({
       variant: 'destructive',
@@ -167,7 +181,6 @@ const submitForm = async (event) => {
     })
   }
 }
-
 </script>
 
 <template>
@@ -192,6 +205,7 @@ const submitForm = async (event) => {
                  required
                  :name="input.entry"
                  v-model="input.value"
+                 @input="input.name === 'Nama' ? updateUsername(input.value) : input.name === 'Kelas' ? updateGradeUser(input.value) : null"
           />
         </div>
 
@@ -224,11 +238,6 @@ const submitForm = async (event) => {
                     rows="5"
                     name="entry.2066764646"
           />
-
-          <Label class="mt-3 ">Preview Surat</Label>
-          <div class="rounded-lg p-4 shadow-md bg-white border-2 border-primary ">
-            <p class="whitespace-pre-line">{{ message }}</p>
-          </div>
         </div>
 
         <div class="bg-white py-2 px-3 flex justify-between items-center rounded-md border border-stone-200 space-x-2">
@@ -276,15 +285,13 @@ const submitForm = async (event) => {
         <Dialog v-model:open="isOpen">
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Terimaksih Sudah Memesan</DialogTitle>
-              <DialogDescription>Pesanan anda akan kami proses, Silahkan pencet tombol dibawah ini</DialogDescription>
+              <DialogTitle>Terimaksih, {{ username }}</DialogTitle>
+              <DialogDescription>Pesanan Anda sedang diproses. Jika pesan tidak terkirim otomatis, tekan tombol di bawah
+                ini. Terima kasih!
+              </DialogDescription>
             </DialogHeader>
-            <div class="mt-4 p-4 border rounded">
-              <h2 class="text-lg font-bold">Hasil Input:</h2>
-              <p v-for="(input, index) in inputName" :key="'result-' + index">
-                <strong>{{ input.name }}</strong>: {{ input.value || "(Belum diisi)" }}
-              </p>
-            </div>
+            <a :href="`https://wa.me/+62895635004580?text=Halo%20kak%2C%20saya%20${username}.%20Sudah%20pesan%20Pre-Order%20Valentine.%20Mohon%20dicek%2C%20terima%20kasih`"
+               class="bg-[#25d366] text-white py-2 px-4 rounded-lg font-semibold border-2 border-black text-center">Whatsapp</a>
           </DialogContent>
         </Dialog>
       </div>
