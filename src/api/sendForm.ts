@@ -5,7 +5,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return res.status(405).json({ message: "Method Not Allowed" });
     }
 
-    const formUrl = import.meta.env.VITE_GFORM_LINK,
+    const formUrl = import.meta.env.VITE_GFORM_LINK
 
         try {
         const response = await fetch(formUrl, {
