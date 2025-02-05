@@ -14,75 +14,39 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import {ref} from "vue";
-import PaketBackburner from "@/assets/bunga surat.png";
-import PaketCLBK from "@/assets/bunga coklat surat.png";
-import PaketHTS from "@/assets/bunga rajut surat.png";
-import PaketCocwit from "@/assets/bunga rajut coklat surat.png";
 
-const products = ref([
-  {
-    id: 1,
-    name: "Paket Cocwit",
-    price: "30k",
-    img: PaketCocwit,
-    entry: "entry.1934597340",
-    isRajut: true,
-    totalProduct: 0,
-    colorProduct: "merah",
-    description: "Surat + Bunga Rajut + Coklat"
-  },
-  {
-    id: 2,
-    name: "Paket HTS",
-    price: "17k",
-    img: PaketHTS,
-    entry: "entry.1108135607",
-    isRajut: true,
-    totalProduct: 0,
-    colorProduct: "merah",
-    description: "Surat + Bunga Rajut "
-  },
-  {
-    id: 3,
-    name: "Paket Backburner",
-    price: "12k",
-    img: PaketBackburner,
-    entry: "entry.652612373",
-    isRajut: false,
-    totalProduct: 0,
-    colorProduct: "merah",
-    description: "Surat + Bunga Asli "
-  },
-  {
-    id: 4,
-    name: "Paket CLBK",
-    price: "25k",
-    img: PaketCLBK,
-    entry: "entry.642255595",
-    isRajut: false,
-    totalProduct: 0,
-    colorProduct: "merah",
-    description: "Surat + Bunga Asli + Coklat"
-  },
-]);
+type ProductCardProps = {
+  id: number;
+  name: string;
+  price: string;
+  img: string;
+  entry: string;
+  isRajut: boolean;
+  totalProduct: number;
+  colorProduct: string;
+  colorEntry: string;
+  description: string;
+}
+
+defineProps<{data: ProductCardProps[]}>()
 </script>
 
 <template>
-  <div v-for="product in products" :key="product.name" class="relative p-2 duration-300"
+  <div v-for="product in data" :key="product.name" class="relative p-2 duration-300"
        :class="product.totalProduct > 0 ? 'border-4 border-primary rounded-lg ' : ''">
     <img :src="product.img" :alt="`Gambar ${product.name}`" class="">
 
     <div class="absolute z-10 top-2 sm:right-0" :class="product.id % 2 ? 'right-0' : 'max-sm:left-0'">
-      <div class="heart-shape w-16 h-16" :class="product.isRajut ? 'bg-red-500' : 'bg-primary'"/>
+      <div class="heart-shape w-16 h-16 bg-primary" />
       <h2 class="text-2xl font-extrabold text-white absolute top-1 left-1">{{ product.price }}</h2>
     </div>
 
-    <div class="grid gap-1 w-full">
+    <div class="grid gap-1.5 w-full">
       <div
-          class="bg-white p-2 border-2 border-dashed border-primary rounded-lg text-center text-sm w-full min-h-[72px]">
+          class="bg-white p-2 border-2 border-dashed border-primary rounded-lg text-center text-sm w-full min-h-[88px]">
         <h1 class="text-sm font-extrabold text-[#81bfd9] leading-4 mb-1">{{ product.name }}</h1>
         <p class="text-xs">{{ product.description }}</p>
+        <p v-if="product.isRajut" class="text-xs text-red-500 font-bold">Stok terbatas</p>
       </div>
 
       <NumberField id="Jumlah"
@@ -98,16 +62,16 @@ const products = ref([
       </NumberField>
 
 
-      <Select v-if="product.totalProduct > 0" v-model="product.colorProduct" :name="product.isRajut ? 'entry.1140270331' : 'entry.450064450' ">
-        <SelectTrigger class="bg-white">
+      <Select v-if="product.totalProduct > 0" v-model="product.colorProduct" :name="product.colorEntry">
+        <SelectTrigger class="bg-white" >
           <SelectValue placeholder="Warna bunga"/>
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectItem value="merah">
+            <SelectItem value="Merah">
               Merah
             </SelectItem>
-            <SelectItem value="putih">
+            <SelectItem value="Putih">
               Putih
             </SelectItem>
             <SelectItem v-if="product.isRajut" value="Pink">

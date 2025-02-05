@@ -1,133 +1,171 @@
-<script setup lang="ts">
+<script setup>
+import { ref, computed } from "vue";
+import axios from "axios";
+import { useRouter } from "vue-router";
 
-import {Dialog, DialogContent, DialogHeader, DialogTrigger} from "@/components/ui/dialog";
-import {Label} from "@/components/ui/label";
-import {Card, CardContent} from "@/components/ui/card";
-import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
-import {
-  NumberField,
-  NumberFieldContent,
-  NumberFieldDecrement,
-  NumberFieldIncrement,
-  NumberFieldInput
-} from "@/components/ui/number-field";
-import {Button} from "@/components/ui/button";
-import {Badge} from '@/components/ui/badge'
-
-import {ref} from "vue";
-import paketBunga from "@/assets/paketBunga.webp";
-
+const router = useRouter();
 
 const products = ref([
   {
-    name: "Paket CLBK",
-    price: 12000,
-    img: paketBunga,
-    entry: "entry.652612373",
-    isRajut: false,
+    id: 1,
+    name: "Produk A",
+    img: "https://via.placeholder.com/150",
+    price: "100.000",
     totalProduct: 0,
-    colorProduct: "merah",
-    description: "Surat + Bunga Asli "
-  },
-  {
-    name: "Paket Backburner",
-    price: 25000,
-    img: paketBunga,
-    entry: "entry.642255595",
-    isRajut: false,
-    totalProduct: 0,
-    colorProduct: "merah",
-    description: "Surat + Bunga Asli + Coklat"
-  },
-  {
-    name: "Paket HTS",
-    price: 17000,
-    img: paketBunga,
-    entry: "entry.1108135607",
     isRajut: true,
-    totalProduct: 0,
-    colorProduct: "merah",
-    description: "Surat + Bunga Rajut "
+    colorProduct: "",
+    entry: "entry.1234567890", // Ganti dengan entry Google Form
+    colorEntry: "entry.0987654321", // Ganti dengan entry Google Form
   },
-  {
-    name: "Paket Cocwit",
-    price: 30000,
-    img: paketBunga,
-    entry: "entry.1934597340",
-    isRajut: true,
-    totalProduct: 0,
-    colorProduct: "merah",
-    description: "Surat + Bunga Rajut + Coklat"
-  }
+  // Tambahkan produk lainnya
 ]);
+
+const inputFile = ref([
+  {
+    name: "Nama",
+    type: "text",
+    placeholder: "Masukkan Nama",
+    entry: "entry.1122334455", // Ganti dengan entry Google Form
+  },
+  {
+    name: "Email",
+    type: "email",
+    placeholder: "Masukkan Email",
+    entry: "entry.5566778899", // Ganti dengan entry Google Form
+  },
+]);
+
+const messageSwitch = ref(false);
+const message = ref("");
+const noteSwitch = ref(false);
+const hasProductSelected = computed(() => products.value.some((p) => p.totalProduct > 0));
+
+const submitForm = async (event) => {
+  event.preventDefault(); // Mencegah form redirect ke Google Form
+
+  const formData = new FormData();
+
+  // Menambahkan produk yang dipilih
+  products.value.forEach((product) => {
+    if (product.totalProduct > 0) {
+      formData.append(product.entry, product.totalProduct);
+      if (product.colorProduct) {
+        formData.append(product.colorEntry, product.colorProduct);
+      }
+    }
+  });
+
+  // Menambahkan input lainnya
+  inputFile.value.forEach((input) => {
+    const inputElement = document.querySelector(`[name="${input.entry}"]`);
+    if (inputElement) {
+      formData.append(input.entry, inputElement.value);
+    }
+  });
+
+  // Menambahkan opsi surat
+  if (messageSwitch.value) {
+    formData.append("entry.2066764646", message.value);
+  }
+
+  // Menambahkan opsi keterangan penerima
+  if (noteSwitch.value) {
+    const receiverNote = document.querySelector(`[name="entry.984193296"]`);
+    if (receiverNote) {
+      formData.append("entry.984193296", receiverNote.value);
+    }
+  }
+
+  // Menambahkan catatan
+  const note = document.querySelector(`[name="entry.1524280066"]`);
+  if (note) {
+    formData.append("entry.1524280066", note.value);
+  }
+
+  try {
+    await axios.post(
+        "https://docs.google.com/forms/d/e/1FAIpQLSehKCDQre_TIBybzj_r2n4sKmQq2PwlppMrwWrYIfb4_e12CA/formResponse",
+        formData
+    );
+
+    // Redirect ke halaman sukses setelah submit
+    router.push("/thank-you");
+  } catch (error) {
+    console.error("Gagal mengirim form:", error);
+    alert("Terjadi kesalahan, coba lagi.");
+  }
+};
 </script>
 
 <template>
-  <Card v-for="product in products" :key="product.name" class="rounded-lg shadow-sm">
-    <CardContent class="p-3 grid gap-2">
-      <div class="relative w-full">
-        <img :src="product.img" :alt="`Gambar ${product.name}`"
-             class="object-cover rounded-lg"/>
-      </div>
-      <div class="">
-        <h2 class="text-sm font-semibold ">{{ product.name }}</h2>
-        <p class="text-xs">Surat + Bunga + Coklat</p>
-      </div>
-      <p class="text-sm font-semibold">Rp.{{ product.price.toLocaleString("ID") }}</p>
-      <Badge v-if="product.totalProduct > 0" class="text-xs bg-slate-400">
-        {{ `${product.totalProduct} Paket, Bunga ${product.colorProduct}` }}
-      </Badge>
-      <Dialog>
-        <DialogTrigger>
-          <Button type="button" class="w-full bg-transparent" variant="outline">
-            {{ product.totalProduct > 0 ? "Edit Paket" : "Pesan" }}
-          </Button>
-        </DialogTrigger>
-        <DialogContent class="bg-white">
-          <DialogHeader class="font-bold">{{ product.name }}</DialogHeader>
+  <form @submit="submitForm">
+    <div class="grid gap-2">
+      <h2 class="text-center text-xl font-bold">Pilih Produk Anda</h2>
+      <div class="grid grid-cols-2 py-4 sm:grid-cols-3 md:grid-cols-4 gap-y-2 sm:gap-4">
+        <div
+            v-for="product in products"
+            :key="product.name"
+            class="relative p-2 duration-300"
+            :class="product.totalProduct > 0 ? 'border-4 border-primary rounded-lg ' : ''"
+        >
+          <img :src="product.img" :alt="`Gambar ${product.name}`" />
 
-          <NumberField id="Jumlah"
-                       :min="0"
-                       :max="10"
-                       v-model="product.totalProduct"
-                       class="grid grid-cols-4 items-center gap-4"
-                       :name="product.entry"
-          >
-            <Label for="Jumlah">Jumlah</Label>
-
-            <NumberFieldContent class="col-span-3">
-              <NumberFieldDecrement/>
-              <NumberFieldInput class="bg-white"/>
-              <NumberFieldIncrement/>
-            </NumberFieldContent>
-          </NumberField>
-
-          <div class="grid gap-4 items-center grid-cols-4">
-            <Label for="warna">Warna Bunga</Label>
-
-            <RadioGroup default-value="merah" class="flex col-span-3"
-                        :class="product.isRajut ? 'justify-beetwen' : 'gap-10'" v-model="product.colorProduct"
-                        :name="product.isRajut ? 'entry.1140270331' : 'entry.450064450' ">
-              <div class="flex items-center space-x-2">
-                <RadioGroupItem value="merah"/>
-                <Label for="merah">Merah</Label>
-              </div>
-              <div class="flex items-center space-x-2">
-                <RadioGroupItem value="putih"/>
-                <Label for="putih">Putih</Label>
-              </div>
-              <div v-if="product.isRajut" class="flex items-center space-x-2">
-                <RadioGroupItem value="pink"/>
-                <Label for="pink">Pink</Label>
-              </div>
-            </RadioGroup>
+          <div class="absolute z-10 top-2 sm:right-0" :class="product.id % 2 ? 'right-0' : 'max-sm:left-0'">
+            <div class="heart-shape w-16 h-16 bg-primary" />
+            <h2 class="text-2xl font-extrabold text-white absolute top-1 left-1">{{ product.price }}</h2>
           </div>
-        </DialogContent>
-      </Dialog>
-    </CardContent>
-  </Card>
+
+          <div class="grid gap-1.5 w-full">
+            <div class="bg-white p-2 border-2 border-dashed border-primary rounded-lg text-center text-sm w-full min-h-[88px]">
+              <h1 class="text-sm font-extrabold text-[#81bfd9] leading-4 mb-1">{{ product.name }}</h1>
+              <p class="text-xs">Deskripsi produk</p>
+              <p v-if="product.isRajut" class="text-xs text-red-500 font-bold">Stok terbatas</p>
+            </div>
+
+            <input type="number" v-model="product.totalProduct" :min="0" :max="10" :name="product.entry" class="border p-2"/>
+
+            <select v-if="product.totalProduct > 0" v-model="product.colorProduct" :name="product.colorEntry" class="border p-2">
+              <option value="Merah">Merah</option>
+              <option value="Putih">Putih</option>
+              <option v-if="product.isRajut" value="Pink">Pink</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid gap-6 mx-2">
+      <div v-for="input in inputFile" class="grid gap-2">
+        <label>{{ input.name }}</label>
+        <input :type="input.type" class="border p-2" :placeholder="input.placeholder" required :name="input.entry" />
+      </div>
+
+      <div class="bg-white py-2 px-3 flex justify-between items-center rounded-md border border-stone-200 space-x-2">
+        <label>Menggunakan surat?</label>
+        <input type="checkbox" v-model="messageSwitch" />
+      </div>
+
+      <div v-if="messageSwitch">
+        <label>Surat</label>
+        <textarea v-model="message" class="border p-2" rows="5" name="entry.2066764646"></textarea>
+      </div>
+
+      <div class="bg-white py-2 px-3 flex justify-between items-center rounded-md border border-stone-200 space-x-2">
+        <label>Paket diantar?</label>
+        <input type="checkbox" v-model="noteSwitch" />
+      </div>
+
+      <div v-if="noteSwitch">
+        <label>Keterangan Penerima</label>
+        <input type="text" class="border p-2" placeholder="ex: dikasih ke Siti, XI DKV 1" name="entry.984193296" />
+      </div>
+
+      <div class="grid gap-2">
+        <label>Catatan</label>
+        <textarea class="border p-2" placeholder="ex: bunganya merah sama putih" name="entry.1524280066"></textarea>
+      </div>
+
+      <button class="bg-blue-500 text-white p-2 rounded" :disabled="!hasProductSelected" type="submit">Kirim</button>
+    </div>
+  </form>
 </template>
-
-<style scoped>
-
-</style>
