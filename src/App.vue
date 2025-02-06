@@ -122,6 +122,18 @@ const hasProductSelected = computed(() => {
   return Boolean(products.value.some(product => product.totalProduct > 0));
 })
 
+const handleSubmit = (event: Event) => {
+  const form = event.target as HTMLFormElement;
+
+  if (!hasProductSelected.value || !allFilled.value) return;
+
+  form.submit();
+
+  setTimeout(() => {
+    window.location.href = `https://wa.me/+62895635004580?text=Halo%20kak%2C%20saya%20${username.value}%20dari%20${gradeUser.value}.%20Sudah%20pesan%20Pre-Order%20Valentine.%20Mohon%20dicek%2C%20terima%20kasih`;
+  }, 500);
+};
+
 </script>
 
 <template>
@@ -129,6 +141,7 @@ const hasProductSelected = computed(() => {
     <img :src="titleUnwrapped" alt="Snapan Unwrappd Love" class="mx-auto my-4 px-8 sm:max-w-[500px]">
     <form
         action="https://docs.google.com/forms/d/e/1FAIpQLSehKCDQre_TIBybzj_r2n4sKmQq2PwlppMrwWrYIfb4_e12CA/formResponse"
+        @submit.prevent="handleSubmit"
     >
       <div class="grid gap-2">
         <h2 class="text-center text-xl font-bold">Pilih Produk Anda</h2>
@@ -222,10 +235,7 @@ const hasProductSelected = computed(() => {
         </div>
 
         <Button class="hover:bg-[#c07299]" :disabled="!hasProductSelected || !allFilled" type="submit">
-          <a :href="`https://wa.me/+62895635004580?text=Halo%20kak%2C%20saya%20${username}%20dari%20${gradeUser}.%20Sudah%20pesan%20Pre-Order%20Valentine.%20Mohon%20dicek%2C%20terima%20kasih`"
-             class="w-full h-full">
             Kirim
-          </a>
         </Button>
       </div>
     </form>
