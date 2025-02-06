@@ -5,13 +5,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from './components/ui/popover'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
 import {Switch} from './components/ui/switch'
 import {Input} from './components/ui/input'
 import {Label} from "./components/ui/label";
@@ -28,7 +21,6 @@ import PaketCLBK from "@/assets/bunga coklat surat.png";
 
 const username = ref<string>("");
 const gradeUser = ref<string>("");
-const isOpen = ref<boolean>(false)
 const messageSwitch = ref<boolean>(false)
 const noteSwitch = ref<boolean>(false)
 const message = ref<string>(`Dear:
