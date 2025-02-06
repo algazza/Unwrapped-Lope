@@ -18,9 +18,7 @@ import {Label} from "./components/ui/label";
 import {Button} from './components/ui/button'
 import {Textarea} from '@/components/ui/textarea'
 import {Toaster} from '@/components/ui/toast'
-import {useToast} from '@/components/ui/toast/use-toast'
 import {computed, ref} from "vue";
-import axios from "axios";
 import titleUnwrapped from "@/assets/SnapanUnwrappedLove 1.png"
 import ProductCard from "@/components/ProductCard.vue";
 import PaketCocwit from "@/assets/bunga rajut coklat surat.png";
@@ -28,7 +26,6 @@ import PaketHTS from "@/assets/bunga rajut surat.png";
 import PaketBackburner from "@/assets/bunga surat.png";
 import PaketCLBK from "@/assets/bunga coklat surat.png";
 
-const {toast} = useToast()
 const username = ref<string>("");
 const gradeUser = ref<string>("");
 const isOpen = ref<boolean>(false)
@@ -228,20 +225,12 @@ const hasProductSelected = computed(() => {
           <Textarea class="bg-white" placeholder="ex: bunganya merah sama putih" name="entry.1524280066"/>
         </div>
 
-        <Button class="hover:bg-[#c07299]" :disabled="!hasProductSelected" type="submit">Kirim</Button>
-
-        <Dialog v-model:open="isOpen">
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Terimaksih, {{ username }}</DialogTitle>
-              <DialogDescription>Pesanan Anda sedang diproses. Jika pesan tidak terkirim otomatis, tekan tombol di bawah
-                ini. Terima kasih!
-              </DialogDescription>
-            </DialogHeader>
-            <a :href="`https://wa.me/+62895635004580?text=Halo%20kak%2C%20saya%20${username}.%20Sudah%20pesan%20Pre-Order%20Valentine.%20Mohon%20dicek%2C%20terima%20kasih`"
-               class="bg-[#25d366] text-white py-2 px-4 rounded-lg font-semibold border-2 border-black text-center">Whatsapp</a>
-          </DialogContent>
-        </Dialog>
+        <Button class="hover:bg-[#c07299]" :disabled="!hasProductSelected" type="submit">
+          <a :href="`https://wa.me/+62895635004580?text=Halo%20kak%2C%20saya%20${username}%20dari%20${gradeUser}.%20Sudah%20pesan%20Pre-Order%20Valentine.%20Mohon%20dicek%2C%20terima%20kasih`"
+             class="w-full h-full">
+            Kirim
+          </a>
+        </Button>
       </div>
     </form>
     <Toaster/>
