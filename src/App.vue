@@ -166,14 +166,14 @@ const submitForm = async (event: Event) => {
 
   try {
     await axios.post(
-        import.meta.env.VITE_APPS_SCRIPT,
+        import.meta.env.VITE_APPS_SCRIPT, // URL Apps Script
         formData,
         {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
         }
-    )
+    );
     isOpen.value = true;
     setTimeout(() => window.open(
         `https://wa.me/+62895635004580?text=Halo%20kak%2C%20saya%20${username.value}%20dari%20${gradeUser.value}.%20Sudah%20pesan%20Pre-Order%20Valentine.%20Mohon%20dicek%2C%20terima%20kasih`,
