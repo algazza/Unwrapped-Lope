@@ -166,8 +166,13 @@ const submitForm = async (event: Event) => {
 
   try {
     await axios.post(
-        "https://unwrapped-love.vercel.app/api/sendForm",
+        import.meta.env.VITE_APPS_SCRIPT,
         formData,
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        }
     )
     isOpen.value = true;
     setTimeout(() => window.open(
