@@ -114,6 +114,10 @@ const updateGradeUser = (value: string) => {
   gradeUser.value = value;
 }
 
+const allFilled = computed(() => {
+  return inputName.value.every(input => input.value.trim() !== "");
+})
+
 const hasProductSelected = computed(() => {
   return Boolean(products.value.some(product => product.totalProduct > 0));
 })
@@ -217,7 +221,7 @@ const hasProductSelected = computed(() => {
           <Textarea class="bg-white" placeholder="ex: bunganya merah sama putih" name="entry.1524280066"/>
         </div>
 
-        <Button class="hover:bg-[#c07299]" :disabled="!hasProductSelected" type="submit">
+        <Button class="hover:bg-[#c07299]" :disabled="!hasProductSelected || allFilled" type="submit">
           <a :href="`https://wa.me/+62895635004580?text=Halo%20kak%2C%20saya%20${username}%20dari%20${gradeUser}.%20Sudah%20pesan%20Pre-Order%20Valentine.%20Mohon%20dicek%2C%20terima%20kasih`"
              class="w-full h-full">
             Kirim
