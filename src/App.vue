@@ -129,63 +129,6 @@ const hasProductSelected = computed(() => {
   return Boolean(products.value.some(product => product.totalProduct > 0));
 })
 
-const submitForm = async (event: Event) => {
-  event.preventDefault()
-
-  const formData = new FormData()
-
-  products.value.forEach(product => {
-    if (product.totalProduct > 0) {
-      formData.append(product.entry, product.totalProduct.toString())
-      formData.append(product.colorEntry, product.colorProduct)
-    }
-  })
-
-  inputName.value.forEach((input) => {
-    const inputElement = document.querySelector(`[name="${input.entry}"]`) as HTMLInputElement
-    if (inputElement) {
-      formData.append(input.entry, inputElement.value)
-    }
-  })
-
-  if (messageSwitch.value) {
-    formData.append("entry.2066764646", message.value)
-  }
-
-  if (noteSwitch.value) {
-    const receiverNote = document.querySelector(`[name="entry.984193296"]`) as HTMLInputElement
-    if (receiverNote) {
-      formData.append("entry.984193296", receiverNote.value)
-    }
-  }
-
-  const note = document.querySelector(`[name="entry.1524280066"]`) as HTMLTextAreaElement
-  if (note) {
-    formData.append("entry.1524280066", note.value)
-  }
-
-  try {
-    await axios.post(
-        import.meta.env.VITE_APPS_SCRIPT, // URL Apps Script
-        formData,
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-        }
-    );
-    isOpen.value = true;
-    setTimeout(() => window.open(
-        `https://wa.me/+62895635004580?text=Halo%20kak%2C%20saya%20${username.value}%20dari%20${gradeUser.value}.%20Sudah%20pesan%20Pre-Order%20Valentine.%20Mohon%20dicek%2C%20terima%20kasih`,
-        "_blank",
-    ), 1000);
-  } catch (error) {
-    toast({
-      variant: 'destructive',
-      title: "Terjadi Kesalahan",
-    })
-  }
-}
 </script>
 
 <template>
