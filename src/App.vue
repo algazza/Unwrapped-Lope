@@ -192,7 +192,7 @@ const submitForm = async (event: Event) => {
   <section class="mx-2 my-4 md:w-[778px] md:mx-auto sm:px-4 sm:border-x-4 sm:border-primary sm:p-4 sm:my-0">
     <img :src="titleUnwrapped" alt="Snapan Unwrappd Love" class="mx-auto my-4 px-8 sm:max-w-[500px]">
     <form
-        @submit="submitForm"
+        action="https://docs.google.com/forms/d/e/1FAIpQLSehKCDQre_TIBybzj_r2n4sKmQq2PwlppMrwWrYIfb4_e12CA/formResponse"
     >
       <div class="grid gap-2">
         <h2 class="text-center text-xl font-bold">Pilih Produk Anda</h2>
