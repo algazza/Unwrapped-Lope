@@ -68,7 +68,7 @@ defineProps<{data: ProductCardProps[]}>()
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectItem value="Merah">
+            <SelectItem v-if="!product.isRajut" value="Merah">
               Merah
             </SelectItem>
             <SelectItem value="Putih">
