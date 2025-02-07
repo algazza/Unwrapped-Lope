@@ -153,6 +153,7 @@ const handleSubmit = (event: Event) => {
       <div class="grid gap-6 mx-2">
         <div v-for="input in inputName" class="grid gap-2">
           <Label class="">{{ input.name }}</Label>
+          <div class="">
           <Input :type="input.type"
                  class="bg-white"
                  :placeholder="input.placeholder"
@@ -161,6 +162,8 @@ const handleSubmit = (event: Event) => {
                  v-model="input.value"
                  @input="input.name === 'Nama' ? updateUsername(input.value) : input.name === 'Kelas' ? updateGradeUser(input.value) : null"
           />
+            <p v-if="input.name === 'Nomor HP' " class="text-[12px]">Jangan gunakan spasi atau strip(-), format sesuai contoh</p>
+          </div>
         </div>
 
         <div class="bg-white py-2 px-3 flex justify-between items-center rounded-md border border-stone-200 space-x-2">
@@ -230,13 +233,14 @@ const handleSubmit = (event: Event) => {
         </div>
 
         <div class="grid gap-2">
-          <Label>Catatan</Label>
-          <Textarea class="bg-white" placeholder="ex: bunganya merah sama putih" name="entry.1524280066"/>
+          <Label>Catatan tambahan</Label>
+          <Textarea class="bg-white" placeholder="ex: bunganya merah sama putih, suratnya kosongin aja" name="entry.1524280066"/>
         </div>
 
         <Button class="hover:bg-[#c07299]" :disabled="!hasProductSelected || !allFilled" type="submit">
             Kirim
         </Button>
+
       </div>
     </form>
     <Toaster/>
