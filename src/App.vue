@@ -52,7 +52,7 @@ type ProductCardProps = {
 const inputName = ref<inputNameProps[]>([
   {name: "Nama", entry: "entry.1776388329", type: "text", placeholder: "Jhon Doe", value: ""},
   {name: "Kelas", entry: "entry.871317360", type: "text", placeholder: "XI DKV 4", value: ""},
-  {name: "Nomor HP", entry: "entry.610481337", type: "tel", placeholder: "+62XXXXXXXXX", value: ""},
+  {name: "Nomor HP", entry: "entry.610481337", type: "tel", placeholder: "62XXXXXXXXX", value: ""},
 ])
 
 const products = ref<ProductCardProps[]>([
