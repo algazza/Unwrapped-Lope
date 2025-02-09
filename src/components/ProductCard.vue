@@ -26,6 +26,7 @@ type ProductCardProps = {
   colorProduct: string;
   colorEntry: string;
   description: string;
+  isReady: boolean;
 }
 
 defineProps<{data: ProductCardProps[]}>()
@@ -53,6 +54,7 @@ defineProps<{data: ProductCardProps[]}>()
                    :min="0"
                    :max="10"
                    v-model="product.totalProduct"
+                   :disabled="!product.isReady"
       >
         <NumberFieldContent>
           <NumberFieldDecrement/>
