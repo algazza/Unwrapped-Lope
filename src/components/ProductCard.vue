@@ -34,8 +34,9 @@ defineProps<{data: ProductCardProps[]}>()
 
 <template>
   <div v-for="product in data" :key="product.name" class="relative p-2 duration-300"
-       :class="product.totalProduct > 0 ? 'border-4 border-primary rounded-lg ' : ''">
-    <img :src="product.img" :alt="`Gambar ${product.name}`" class="">
+       :class="[product.totalProduct > 0 ? 'border-4 border-primary rounded-lg ' : '', product.isReady ? '' : 'grayscale']"
+  >
+    <img :src="product.img" :alt="`Gambar ${product.name}`">
 
     <div class="absolute z-10 top-2 sm:right-0" :class="product.id % 2 ? 'right-0' : 'max-sm:left-0'">
       <div class="heart-shape w-16 h-16 bg-primary" />
@@ -47,7 +48,7 @@ defineProps<{data: ProductCardProps[]}>()
           class="bg-white p-2 border-2 border-dashed border-primary rounded-lg text-center text-sm w-full min-h-[88px]">
         <h1 class="text-sm font-extrabold text-[#81bfd9] leading-4 mb-1">{{ product.name }}</h1>
         <p class="text-xs">{{ product.description }}</p>
-        <p v-if="product.isRajut" class="text-xs text-red-500 font-bold">Stok terbatas</p>
+        <p v-if="product.isRajut" class="text-xs text-red-500 font-bold">Stok habis</p>
       </div>
 
       <NumberField id="Jumlah"
