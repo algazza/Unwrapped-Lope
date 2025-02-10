@@ -48,7 +48,7 @@ defineProps<{data: ProductCardProps[]}>()
           class="bg-white p-2 border-2 border-dashed border-primary rounded-lg text-center text-sm w-full min-h-[88px]">
         <h1 class="text-sm font-extrabold text-[#81bfd9] leading-4 mb-1">{{ product.name }}</h1>
         <p class="text-xs">{{ product.description }}</p>
-        <p v-if="product.isRajut" class="text-xs text-red-500 font-bold">Sisa 1</p>
+        <p v-if="product.isRajut" class="text-xs text-red-500 font-bold">Stok habis</p>
       </div>
 
       <NumberField id="Jumlah"
@@ -77,7 +77,7 @@ defineProps<{data: ProductCardProps[]}>()
             <SelectItem value="Putih">
               Putih
             </SelectItem>
-            <SelectItem v-if="!product.isRajut" value="Pink">
+            <SelectItem v-if="product.isRajut" value="Pink">
               Pink
             </SelectItem>
           </SelectGroup>

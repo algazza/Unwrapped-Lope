@@ -58,32 +58,6 @@ const inputName = ref<inputNameProps[]>([
 
 const products = ref<ProductCardProps[]>([
   {
-    id: 1,
-    name: "Paket Cocwit",
-    price: "30k",
-    img: PaketCocwit,
-    entry: "entry.1085764745",
-    isRajut: true,
-    totalProduct: 0,
-    colorProduct: "Putih",
-    colorEntry: "entry.146196698",
-    description: "Surat + Bunga Rajut + Coklat",
-    isReady: true
-  },
-  {
-    id: 2,
-    name: "Paket HTS",
-    price: "17k",
-    img: PaketHTS,
-    entry: "entry.1470818403",
-    isRajut: true,
-    totalProduct: 0,
-    colorProduct: "Putih",
-    colorEntry: "entry.273963718",
-    description: "Surat + Bunga Rajut ",
-    isReady: true
-  },
-  {
     id: 3,
     name: "Paket Backburner",
     price: "12k",
@@ -91,7 +65,7 @@ const products = ref<ProductCardProps[]>([
     entry: "entry.1709928226",
     isRajut: false,
     totalProduct: 0,
-    colorProduct: "Merah",
+    colorProduct: "Putih",
     colorEntry: "entry.591189756",
     description: "Surat + Bunga Asli ",
     isReady: true
@@ -104,10 +78,36 @@ const products = ref<ProductCardProps[]>([
     entry: "entry.995144663",
     isRajut: false,
     totalProduct: 0,
-    colorProduct: "Merah",
+    colorProduct: "Putih",
     colorEntry: "entry.135906973",
     description: "Surat + Bunga Asli + Coklat",
     isReady: true
+  },
+  {
+    id: 1,
+    name: "Paket Cocwit",
+    price: "30k",
+    img: PaketCocwit,
+    entry: "entry.1085764745",
+    isRajut: true,
+    totalProduct: 0,
+    colorProduct: "Pink",
+    colorEntry: "entry.146196698",
+    description: "Surat + Bunga Rajut + Coklat",
+    isReady: false
+  },
+  {
+    id: 2,
+    name: "Paket HTS",
+    price: "17k",
+    img: PaketHTS,
+    entry: "entry.1470818403",
+    isRajut: true,
+    totalProduct: 0,
+    colorProduct: "Pink",
+    colorEntry: "entry.273963718",
+    description: "Surat + Bunga Rajut ",
+    isReady: false
   },
 ]);
 
