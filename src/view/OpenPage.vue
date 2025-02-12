@@ -4,11 +4,11 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from './components/ui/popover'
-import {Switch} from './components/ui/switch'
-import {Input} from './components/ui/input'
-import {Label} from "./components/ui/label";
-import {Button} from './components/ui/button'
+} from '@/components/ui/popover'
+import {Switch} from '@/components/ui/switch'
+import {Input} from '@/components/ui/input'
+import {Label} from "@/components/ui/label";
+import {Button} from '@/components/ui/button'
 import {Textarea} from '@/components/ui/textarea'
 import {Toaster} from '@/components/ui/toast'
 import {computed, ref} from "vue";
@@ -18,7 +18,6 @@ import PaketCocwit from "@/assets/bunga rajut coklat surat.png";
 import PaketHTS from "@/assets/bunga rajut surat.png";
 import PaketBackburner from "@/assets/bunga surat.png";
 import PaketCLBK from "@/assets/bunga coklat surat.png";
-import ClosePage from "@/view/ClosePage.vue";
 
 const username = ref<string>("");
 const gradeUser = ref<string>("");
@@ -168,7 +167,8 @@ const handleSubmit = (event: Event) => {
                    v-model="input.value"
                    @input="input.name === 'Nama' ? updateUsername(input.value) : input.name === 'Kelas' ? updateGradeUser(input.value) : null"
             />
-            <p v-if="input.name === 'Nomor HP' " class="text-[12px]">Jangan gunakan spasi atau strip(-), format sesuai contoh</p>
+            <p v-if="input.name === 'Nomor HP' " class="text-[12px]">Jangan gunakan spasi atau strip(-), format sesuai
+              contoh</p>
           </div>
         </div>
 
@@ -240,7 +240,8 @@ const handleSubmit = (event: Event) => {
 
         <div class="grid gap-2">
           <Label>Catatan tambahan</Label>
-          <Textarea class="bg-white" placeholder="ex: bunganya merah sama putih, suratnya kosongin aja" name="entry.1524280066"/>
+          <Textarea class="bg-white" placeholder="ex: bunganya merah sama putih, suratnya kosongin aja"
+                    name="entry.1524280066"/>
         </div>
 
         <Button class="hover:bg-[#c07299]" :disabled="!hasProductSelected || !allFilled" type="submit">
