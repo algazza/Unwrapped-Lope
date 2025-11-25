@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import ClosePage from "@/view/ClosePage.vue";
+import OpenPage from "./view/OpenPage.vue";
 </script>
 
 <template>
-  <ClosePage/>
+  <OpenPage/>
 </template>
